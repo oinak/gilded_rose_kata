@@ -163,7 +163,7 @@ describe "#update_quality" do
         Then { item.quality.should == 0 }
       end
     end
-
+=begin
     context "conjured item" do
       before { pending }
       Given(:name) { "Conjured Mana Cake" }
@@ -200,8 +200,8 @@ describe "#update_quality" do
         end
       end
     end
+=end
   end
-
   context "with several objects" do
     Given(:items) {
       [
