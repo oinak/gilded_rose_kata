@@ -6,7 +6,6 @@ def update_quality(items)
 end
 
 module Updater
-
   module Factory
     extend self
 
@@ -69,22 +68,17 @@ module Updater
   end
 
   class Backstage < Base
-
     private
 
     def update_quality
-      if item.sell_in < 1
-        item.quality = 0
-      else
-        increase_quality
-        increase_quality if item.sell_in < 11
-        increase_quality if item.sell_in < 6
-      end
+      increase_quality
+      increase_quality if item.sell_in < 11
+      increase_quality if item.sell_in < 6
+      item.quality = 0 if item.sell_in < 1
     end
   end
 
   class Brie < Base
-
     private
 
     def update_quality
