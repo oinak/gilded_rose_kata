@@ -59,6 +59,9 @@ module Updater
   end
 
   class Backstage < Base
+
+    private
+
     def update_quality
       if item.sell_in < 1
         item.quality = 0
@@ -71,6 +74,9 @@ module Updater
   end
 
   class Brie < Base
+
+    private
+
     def update_quality
       increase_quality
       increase_quality if item.sell_in < 1 && item.quality < 50
