@@ -1,5 +1,15 @@
 def update_quality(items)
   items.each do |item|
+    Updater.new(item).update
+  end
+end
+
+class Updater
+  def initialize(item)
+    @item = item
+  end
+
+  def update
     if item.name == 'Aged Brie'
       update_brie(item)
     elsif item.name == 'Backstage passes to a TAFKAL80ETC concert'
@@ -10,53 +20,59 @@ def update_quality(items)
       update_default(item)
     end
   end
-end
 
-def update_default(item)
-  if item.quality > 0
-    item.quality -= 1
+  private
+
+  def item
+    @item
   end
 
-  item.sell_in -= 1
-
-  if item.sell_in < 0
+  def update_default(item)
     if item.quality > 0
       item.quality -= 1
     end
-  end
-end
 
-def update_sulfuras(item)
-end
+    item.sell_in -= 1
 
-def update_backstage(item)
-  if item.quality < 50
-    item.quality += 1
-    if item.sell_in < 11
-      item.quality += 1
-      if item.sell_in < 6
-        item.quality += 1
+    if item.sell_in < 0
+      if item.quality > 0
+        item.quality -= 1
       end
     end
   end
 
-  item.sell_in -= 1
-
-  if item.sell_in < 0
-    item.quality = item.quality - item.quality
-  end
-end
-
-def update_brie(item)
-  if item.quality < 50
-    item.quality += 1
+  def update_sulfuras(item)
   end
 
-  item.sell_in -= 1
-
-  if item.sell_in < 0
+  def update_backstage(item)
     if item.quality < 50
       item.quality += 1
+      if item.sell_in < 11
+        item.quality += 1
+        if item.sell_in < 6
+          item.quality += 1
+        end
+      end
+    end
+
+    item.sell_in -= 1
+
+    if item.sell_in < 0
+      item.quality = item.quality - item.quality
+    end
+  end
+
+  def update_brie(item)
+    if item.quality < 50
+      item.quality += 1
+    end
+
+    item.sell_in -= 1
+
+    if item.sell_in < 0
+      if item.quality < 50
+        item.quality += 1
+      end
     end
   end
 end
