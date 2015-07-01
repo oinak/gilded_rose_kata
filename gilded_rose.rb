@@ -36,7 +36,16 @@ module Updater
     end
 
     def update_quality
-      item.quality -= (item.sell_in < 1 ? 2 : 1) if item.quality > 0
+      decrease_quality
+      decrease_quality if item.sell_in < 1
+    end
+
+    def increase_quality
+      item.quality += 1 unless item.quality >= 50
+    end
+
+    def decrease_quality
+      item.quality -= 1 unless item.quality <= 0
     end
 
     def update_sell_in
@@ -50,38 +59,21 @@ module Updater
   end
 
   class Backstage < Base
-    def update
-      if item.quality < 50
-        item.quality += 1
-        if item.sell_in < 11
-          item.quality += 1
-          if item.sell_in < 6
-            item.quality += 1
-          end
-        end
-      end
-
-      item.sell_in -= 1
-
-      if item.sell_in < 0
-        item.quality = item.quality - item.quality
+    def update_quality
+      if item.sell_in < 1
+        item.quality = 0
+      else
+        increase_quality
+        increase_quality if item.sell_in < 11
+        increase_quality if item.sell_in < 6
       end
     end
   end
 
   class Brie < Base
-    def update
-      if item.quality < 50
-        item.quality += 1
-      end
-
-      item.sell_in -= 1
-
-      if item.sell_in < 0
-        if item.quality < 50
-          item.quality += 1
-        end
-      end
+    def update_quality
+      increase_quality
+      increase_quality if item.sell_in < 1 && item.quality < 50
     end
   end
 end
