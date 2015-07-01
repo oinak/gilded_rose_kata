@@ -4,26 +4,29 @@ def update_quality(items)
       update_brie(item)
     elsif item.name == 'Backstage passes to a TAFKAL80ETC concert'
       update_backstage(item)
+    elsif item.name == 'Sulfuras, Hand of Ragnaros'
+      update_sulfuras(item)
     else
-      if item.quality > 0
-        if item.name != 'Sulfuras, Hand of Ragnaros'
-          item.quality -= 1
-        end
-      end
-
-      if item.name != 'Sulfuras, Hand of Ragnaros'
-        item.sell_in -= 1
-      end
-
-      if item.sell_in < 0
-        if item.quality > 0
-          if item.name != 'Sulfuras, Hand of Ragnaros'
-            item.quality -= 1
-          end
-        end
-      end
+      update_default(item)
     end
   end
+end
+
+def update_default(item)
+  if item.quality > 0
+    item.quality -= 1
+  end
+
+  item.sell_in -= 1
+
+  if item.sell_in < 0
+    if item.quality > 0
+      item.quality -= 1
+    end
+  end
+end
+
+def update_sulfuras(item)
 end
 
 def update_backstage(item)
