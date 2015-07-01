@@ -1,77 +1,87 @@
 def update_quality(items)
   items.each do |item|
-    Updater.new(item).update
+    updater = Updater.get_updater(item)
+    updater.update
   end
 end
 
-class Updater
-  def initialize(item)
-    @item = item
-  end
-
-  def update
+module Updater
+  def get_updater(item)
     if item.name == 'Aged Brie'
-      update_brie(item)
+      Brie.new(item)
     elsif item.name == 'Backstage passes to a TAFKAL80ETC concert'
-      update_backstage(item)
+      Backstage.new(item)
     elsif item.name == 'Sulfuras, Hand of Ragnaros'
-      update_sulfuras(item)
+      Sulfuras.new(item)
     else
-      update_default(item)
+      Base.new(item)
     end
   end
+  module_function :get_updater
 
-  private
-
-  def item
-    @item
-  end
-
-  def update_default(item)
-    if item.quality > 0
-      item.quality -= 1
+  class Base
+    def initialize(item)
+      @item = item
     end
 
-    item.sell_in -= 1
-
-    if item.sell_in < 0
+    def update
       if item.quality > 0
         item.quality -= 1
       end
-    end
-  end
 
-  def update_sulfuras(item)
-  end
+      item.sell_in -= 1
 
-  def update_backstage(item)
-    if item.quality < 50
-      item.quality += 1
-      if item.sell_in < 11
-        item.quality += 1
-        if item.sell_in < 6
-          item.quality += 1
+      if item.sell_in < 0
+        if item.quality > 0
+          item.quality -= 1
         end
       end
     end
 
-    item.sell_in -= 1
+    private
 
-    if item.sell_in < 0
-      item.quality = item.quality - item.quality
+    def item
+      @item
     end
   end
 
-  def update_brie(item)
-    if item.quality < 50
-      item.quality += 1
+  class Sulfuras < Base
+    def update
     end
+  end
 
-    item.sell_in -= 1
-
-    if item.sell_in < 0
+  class Backstage < Base
+    def update
       if item.quality < 50
         item.quality += 1
+        if item.sell_in < 11
+          item.quality += 1
+          if item.sell_in < 6
+            item.quality += 1
+          end
+        end
+      end
+
+      item.sell_in -= 1
+
+      if item.sell_in < 0
+        item.quality = item.quality - item.quality
+      end
+    end
+  end
+
+  class Brie < Base
+    def update
+      if item.quality < 50
+        item.quality += 1
+      end
+
+      item.sell_in -= 1
+
+      if item.sell_in < 0
+        if item.quality < 50
+          item.quality += 1
+        end
       end
     end
   end
