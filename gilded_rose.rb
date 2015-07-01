@@ -25,23 +25,22 @@ module Updater
     end
 
     def update
-      if item.quality > 0
-        item.quality -= 1
-      end
-
-      item.sell_in -= 1
-
-      if item.sell_in < 0
-        if item.quality > 0
-          item.quality -= 1
-        end
-      end
+      update_quality
+      update_sell_in
     end
 
     private
 
     def item
       @item
+    end
+
+    def update_quality
+      item.quality -= (item.sell_in < 1 ? 2 : 1) if item.quality > 0
+    end
+
+    def update_sell_in
+      item.sell_in -= 1
     end
   end
 
