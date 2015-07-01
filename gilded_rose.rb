@@ -1,23 +1,33 @@
 def update_quality(items)
   items.each do |item|
-    updater = Updater.get_updater(item)
+    updater = Updater::Factory.get(item)
     updater.update
   end
 end
 
 module Updater
-  def get_updater(item)
-    if item.name == 'Aged Brie'
-      Brie.new(item)
-    elsif item.name == 'Backstage passes to a TAFKAL80ETC concert'
-      Backstage.new(item)
-    elsif item.name == 'Sulfuras, Hand of Ragnaros'
-      Sulfuras.new(item)
-    else
-      Base.new(item)
+
+  module Factory
+    extend self
+
+    def get(item)
+      updater[item.name].new(item)
+    end
+
+    private
+
+    def updater
+      Hash.new(Base).merge(updaters)
+    end
+
+    def updaters
+      {
+        'Aged Brie'                                 => Brie,
+        'Backstage passes to a TAFKAL80ETC concert' => Backstage,
+        'Sulfuras, Hand of Ragnaros'                => Sulfuras
+      }
     end
   end
-  module_function :get_updater
 
   class Base
     def initialize(item)
