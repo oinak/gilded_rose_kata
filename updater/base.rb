@@ -20,8 +20,10 @@ module Updater
       decrease_quality if item.sell_in < 1
     end
 
-    def increase_quality
-      item.quality += 1 unless item.quality >= 50
+    def increase_quality(value = 1)
+      value.times do
+        item.quality += 1 unless item.quality >= 50
+      end
     end
 
     def decrease_quality(value = 1)
@@ -30,6 +32,8 @@ module Updater
       end
     end
 
+    def clear_quality
+      decrease_quality(item.quality)
     end
 
     def update_sell_in

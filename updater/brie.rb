@@ -4,8 +4,7 @@ module Updater
     private
 
     def update_quality
-      increase_quality
-      increase_quality if item.sell_in < 1 && item.quality < 50
+      increase_quality(item.sell_in < 1 ? 2 : 1)
     end
   end
 end
