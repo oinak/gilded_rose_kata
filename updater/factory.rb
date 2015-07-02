@@ -1,4 +1,4 @@
-%w(base brie backstage sulfuras).each do |lib|
+%w(base brie backstage conjured sulfuras).each do |lib|
   require_relative "#{lib}.rb"
 end
 
@@ -20,6 +20,7 @@ module Updater
       {
         'Aged Brie'                                 => Brie,
         'Backstage passes to a TAFKAL80ETC concert' => Backstage,
+        'Conjured Mana Cake'                        => Conjured,
         'Sulfuras, Hand of Ragnaros'                => Sulfuras
       }
     end

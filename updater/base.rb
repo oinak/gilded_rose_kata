@@ -24,8 +24,12 @@ module Updater
       item.quality += 1 unless item.quality >= 50
     end
 
-    def decrease_quality
-      item.quality -= 1 unless item.quality <= 0
+    def decrease_quality(value = 1)
+      value.times do
+        item.quality -= 1 unless item.quality <= 0
+      end
+    end
+
     end
 
     def update_sell_in
